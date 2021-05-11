@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap CSS -->
+		<!-- Utilising Bootstrap framework for easy UI dev -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/main.css">
+		<!-- Google icon font used for share icon -->
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<title>Pizza 42</title>
+	</head>
+	<body> 
+		<!-- Start top navbar -->
+		<nav class="navbar navbar-dark bg-dark fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+          Pizza 42
+        </a>
+        <form class="d-flex align-items-center">
+          <a class="btn" href="/cart"><span class="material-icons text-white">shopping_cart</span><span id="cart-amount" class="badge bg-primary">0</span></a>
+					<a id="account-link" class="btn btn-dark" href="/account"><span class="material-icons text-white">account_circle</span> Login</a>
+				</form>
+      </div>
+		</nav>
+		<!-- End top navbar -->
+		
+		<!-- Start main content -->
+		<div id="content-home" class="container page" hidden>
+			<div class="row">
+				<div class="col align-self-center">
+					<div class="card bg-dark text-white">
+            <img src="https://cdn.foodism.co.uk/featured_image/5c506d87c15c9.jpeg" class="card-img background-img" alt="Pizza banner" height="300">
+            <div class="card-img-overlay">
+              <h1 class="card-title">Welcome to Pizza 42!</h1>
+              <p class="card-text">Browse our delicious menu, and when you're ready please place an order</p>
+            </div>
+          </div>
+				</div>
+			</div>
+      <div class="row">
+				<div class="col align-self-center">
+          <h2>Menu</h2>
+          <div class="accordion" id="menu-accordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Margherita
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#menu-accordion">
+                <div class="accordion-body">
+                  <p>Deliciously simple - our signature tomato base with mozarella and basil - £10.00</p>
+                  <a href="/cart?itemName=Margherita&itemPrice=10" type="button" class="btn btn-primary">Add to order</a>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Pepperoni
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#menu-accordion">
+                <div class="accordion-body">
+                  <p>Our signature tomato base with mozarella and spicy italian salami - £12.00</p>
+                  <a href="/cart?itemName=Pepperoni&itemPrice=12" type="button" class="btn btn-primary">Add to order</a>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Capricciosa
+                </button>
+              </h2>
+              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#menu-accordion">
+                <div class="accordion-body">
+                  <p>Our signature tomato base with mozarella, Italian baked ham, mushroom, artichoke and black olives - £14.00</p>
+                  <a href="/cart?itemName=Capricciosa&itemPrice=14" type="button" class="btn btn-primary">Add to order</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+		</div>
+		<!-- End main content -->
+    <!-- Start cart content-->
+    <div id="content-cart" class="container page" hidden>
+      <div class="card shopping-cart">
+        <div class="card-header bg-dark text-light">
+          <span class="material-icons">shopping_cart</span> Review your order
+            <a href="/" class="btn btn-outline-info btn-sm float-end">Continue shopping</a>
+            <div class="clearfix"></div>
+        </div>
+        <div class="card-body">
+          <!-- Empty cart -->
+          <div id="cart-empty" class="row">
+            <div class="col-12 text-sm-center col-sm-12 text-md-left">
+                <h4 class="product-name"><strong>Your cart is currently empty!</strong></h4>
+                <h4>
+                    <small><span id="product-desc">Please add a delicious pizza from the menu</span></small>
+                </h4>
+            </div>
+          </div>
+          <hr>
+          <!-- Empty cart end -->
+          <!-- PRODUCT -->
+          <div id="cart-item" class="row" hidden>
+              <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
+                  <h4 class="product-name"><strong><span id="item-name">{Product name}</span></strong></h4>
+              </div>
+              <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
+                  <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
+                      <h6><strong>£<span id="item-price">12</span>.00</strong></h6>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                      <div class="quantity">
+                          <input type="button" value="+" class="plus">
+                          <input type="number" step="1" max="99" min="1" value="1" title="Qty" class="qty"
+                                  size="4">
+                          <input type="button" value="-" class="minus">
+                      </div>
+                  </div>
+                  <div class="col-2 col-sm-2 col-md-2 text-right">
+                      <button type="button" class="btn btn-outline-danger btn-xs">
+                        <span class="material-icons">delete</span>
+                      </button>
+                  </div>
+              </div>
+          </div>
+          <!-- END PRODUCT -->
+          <div class="float-end">
+              <a href="" class="cart-buttons btn btn-outline-secondary pull-right disabled">
+                  Update shopping cart
+              </a>
+          </div>
+        </div>
+        <div class="card-footer">
+            <div class="row" style="margin: 10px">
+              <div class="col">
+                <div class="float-end" style="margin: 5px">
+                  Total price: <b>£<span id="cart-total">0</span>.00</b>
+                </div>
+              </div>
+              <div class="col">
+                <button class="cart-buttons btn btn-success pull-right disabled" onclick="initOrder()">Checkout</button>
+                <pre id="api-call-result"></pre>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="api-success" class="alert alert-success" role="alert" hidden>
+      <pre><code>A simple success alert—check it out!</code></pre>
+    </div>
+    <div id="api-fail" class="alert alert-danger" role="alert" hidden>
+      <pre><code>simple danger alert—check it out!</code></pre>
+    </div>
+    </div>
+    <!-- End cart content -->
+    <!-- Start cart content -->
+    <div id="content-account" class="container page" hidden>
+      <div class="card">
+        <div class="card-header">
+          My Account
+        </div>
+        <div class="card-body">
+          <a href=/logout class="btn btn-primary">Logout</a>
+        </div>
+      </div>
+    </div>
+    <!-- End account content -->
+		<!-- JS includes placed at end for better page load times -->
+		<!-- JQuery used for easier DOM manipulation in JavaScript (as well as being required by Bootstrap) -->
+		<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>-->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.13/auth0-spa-js.production.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/ui.js"></script>
+	</body>
+</html>

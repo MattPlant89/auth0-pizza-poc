@@ -1,0 +1,28 @@
+body {
+  background-color: #f5f5f5;
+  padding-top: 5rem;
+}
+
+.navbar-brand {
+	padding-top: 0;
+	padding-bottom: 0;
+	font-size: inherit;
+}
+
+.img-thumbnail {
+	max-width: 200px;
+}
+
+.method {
+	color: white;
+}
+
+.method:hover {
+	text-decoration: none;
+	color: white;
+}
+
+.background-img {
+	opacity: 0.4;
+	object-fit: cover;
+}
