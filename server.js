@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const { join } = require("path");
 const morgan = require("morgan");
@@ -36,8 +37,8 @@ app.get("/api/orders", checkJwt, checkScopes, async (req, res) => {
   try {
     var management = new managementClient({
       domain: authConfig.domain,
-      clientId: authConfig.management.clientId,
-      clientSecret: authConfig.management.clientSecret,
+      clientId: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
       scope: 'read:users update:users'
     });
   
