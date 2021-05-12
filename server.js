@@ -35,9 +35,9 @@ app.use(express.static(join(__dirname, "public")));
 app.get("/api/orders", checkJwt, checkScopes, async (req, res) => {
   try {
     var management = new managementClient({
-      domain: 'dev-bpi1bk-f.eu.auth0.com',
-      clientId: 'ZKcArjsZ8Rj1TgbOhTIjw2Ts6PfMh0lF',
-      clientSecret: 'B7LTSqZGtiqal7-RpKR1u_dgpmq5yjT2Whsj3wmMmLc8-3T2xOq72CZ6Jg9obdei',
+      domain: authConfig.domain,
+      clientId: authConfig.management.clientId,
+      clientSecret: authConfig.management.clientSecret,
       scope: 'read:users update:users'
     });
   
@@ -52,7 +52,7 @@ app.get("/api/orders", checkJwt, checkScopes, async (req, res) => {
         previousOrders: [req.query]
       };
     }
-    
+
     user = await management.updateUserMetadata(params, metadata);
 
     res.send({
