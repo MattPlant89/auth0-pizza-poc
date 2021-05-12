@@ -73,12 +73,13 @@ const requireAuth = async (fn, targetUrl) => {
 const initOrder = async () => {
   try {
     
-    // Get the access token from the Auth0 client
+    let currentCart = window.localStorage.currentCart;
+    // Get the access token from the Auth0 client with an extra scope specific for this API
     const token = await auth0.getTokenSilently({scope: 'create:order'});
 
     // Make the call to the API, setting the token
     // in the Authorization header
-    const response = await fetch("/api/orders", {
+    const response = await fetch("/api/orders" + currentCart, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -93,6 +94,11 @@ const initOrder = async () => {
     responseElement.children[0].children[0].innerText = JSON.stringify(responseData, null, '\t');
 
     responseElement.removeAttribute("hidden");
+
+    var toast = new bootstrap.Toast(document.getElementById("order-success-toast"));
+    toast.show();
+    
+    clearCart();
 
 } catch (e) {
     console.log(e);

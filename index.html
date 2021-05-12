@@ -99,57 +99,53 @@
         </div>
         <div class="card-body">
           <!-- Empty cart -->
-          <div id="cart-empty" class="row">
-            <div class="col-12 text-sm-center col-sm-12 text-md-left">
-                <h4 class="product-name"><strong>Your cart is currently empty!</strong></h4>
-                <h4>
-                    <small><span id="product-desc">Please add a delicious pizza from the menu</span></small>
-                </h4>
+          <div id="cart-empty">
+            <div class="row">
+              <div class="col-12 text-sm-center col-sm-12 text-md-left">
+                  <h4 class="product-name"><strong>Your cart is currently empty!</strong></h4>
+                  <h4>
+                      <small><span id="product-desc">Please add a delicious pizza from the menu</span></small>
+                  </h4>
+              </div>
             </div>
+            <hr>
           </div>
-          <hr>
           <!-- Empty cart end -->
-          <!-- PRODUCT -->
-          <div id="cart-item" class="row" hidden>
+          <div id="cart-item-list">
+            <!-- PRODUCT -->
+            <div id="cart-item" class="row cart-item" hidden>
               <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
-                  <h4 class="product-name"><strong><span id="item-name">{Product name}</span></strong></h4>
+                  <h4 class="product-name"><strong>{itemName}</strong></h4>
               </div>
               <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
                   <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
-                      <h6><strong>£<span id="item-price">12</span>.00</strong></h6>
+                      <h6><strong>£{itemPrice}.00</strong></h6>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
-                      <div class="quantity">
-                          <input type="button" value="+" class="plus">
-                          <input type="number" step="1" max="99" min="1" value="1" title="Qty" class="qty"
-                                  size="4">
-                          <input type="button" value="-" class="minus">
-                      </div>
+                      
                   </div>
                   <div class="col-2 col-sm-2 col-md-2 text-right">
-                      <button type="button" class="btn btn-outline-danger btn-xs">
-                        <span class="material-icons">delete</span>
-                      </button>
+                      
                   </div>
               </div>
+            </div>
+            <!-- END PRODUCT -->
           </div>
-          <!-- END PRODUCT -->
           <div class="float-end">
-              <a href="" class="cart-buttons btn btn-outline-secondary pull-right disabled">
-                  Update shopping cart
-              </a>
+              <button onclick="clearCart();" class="cart-buttons btn btn-outline-danger pull-right disabled">
+                  Clear shopping cart
+              </button>
           </div>
         </div>
         <div class="card-footer">
             <div class="row" style="margin: 10px">
               <div class="col">
-                <div class="float-end" style="margin: 5px">
-                  Total price: <b>£<span id="cart-total">0</span>.00</b>
+                <div id="cart-total" class="float-end" style="margin: 5px" hidden>
+                  Total price: <b>£{totalPrice}.00</b>
                 </div>
               </div>
               <div class="col">
                 <button class="cart-buttons btn btn-success pull-right disabled" onclick="initOrder()">Checkout</button>
-                <pre id="api-call-result"></pre>
               </div>
             </div>
         </div>
@@ -162,18 +158,71 @@
     </div>
     </div>
     <!-- End cart content -->
-    <!-- Start cart content -->
+    <!-- Start account content -->
     <div id="content-account" class="container page" hidden>
       <div class="card">
-        <div class="card-header">
-          My Account
-        </div>
+        <h5 class="card-header">My account<a href=/logout class="btn btn-primary float-end">Logout</a></h5>
         <div class="card-body">
-          <a href=/logout class="btn btn-primary">Logout</a>
+          <h6>Profile</h6>
+          <div class="row">
+            <div class="col-6">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <div class="fw-bold">Email address</div>
+                  <span id="email">{email@address}</span>
+                </li>
+                <li class="list-group-item">
+                  <div class="fw-bold">First name</div>
+                  <span id="given_name">{given_name}</span>
+                </li>
+                <li class="list-group-item">
+                  <div class="fw-bold">Last name</div>
+                  <span id="family_name">{family_name}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <hr>
+          <h6>Order history</h6>
+          <div class="row">
+            <div id="order-history" class="col-6">
+              <div id="no-history" class="card">
+                <div class="card-body">
+                  <h6 class="card-subtitle">You have no previous orders</h6>
+                </div>
+              </div>
+              <div id="order" class="card" hidden>
+                <div class="card-header">Order number #{orderNumber}</div>
+                <div class="card-body">
+                  <ul class="order-item-list list-group list-group-flush">
+                    <li class="order-item list-group-item">{itemName} <span class="float-end">£{itemPrice}.00</span></li>
+                  </ul>
+                </div>
+                <div class="card-footer">
+                  Order total <span class="float-end">£{orderTotal}.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <!-- End account content -->
+    <!-- Start order success toast -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+      <div id="order-success-toast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <span class="me-2 material-icons text-success">check_circle</span>
+          <strong class="me-auto">Pizza 42</strong>
+          <small>Now</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          Your order has been placed - please see order history in your <a href="/account">account.</a>
+        </div>
+      </div>
+    </div>
+    <!-- End order success toast -->
 		<!-- JS includes placed at end for better page load times -->
 		<!-- JQuery used for easier DOM manipulation in JavaScript (as well as being required by Bootstrap) -->
 		<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>-->

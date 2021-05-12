@@ -6,6 +6,7 @@ const jwt = require("express-jwt");
 const jwtAuthz = require("express-jwt-authz");
 const jwksRsa = require("jwks-rsa");
 const authConfig = require("./auth_config.json");
+const managementClient = require('auth0').ManagementClient;
 
 const app = express();
 
@@ -31,10 +32,36 @@ app.use(express.static(join(__dirname, "public")));
 
 // Create an endpoint that uses the above middleware to
 // protect this route from unauthorized requests
-app.get("/api/orders", checkJwt, checkScopes, (req, res) => {
-  res.send({
-    msg: "Your access token was successfully validated!"
-  });
+app.get("/api/orders", checkJwt, checkScopes, async (req, res) => {
+  try {
+    var management = new managementClient({
+      domain: 'dev-bpi1bk-f.eu.auth0.com',
+      clientId: 'ZKcArjsZ8Rj1TgbOhTIjw2Ts6PfMh0lF',
+      clientSecret: 'B7LTSqZGtiqal7-RpKR1u_dgpmq5yjT2Whsj3wmMmLc8-3T2xOq72CZ6Jg9obdei',
+      scope: 'read:users update:users'
+    });
+  
+    let params = {id: req.user.sub};
+    let user = await management.getUser(params);
+    let metadata = {};
+    if(user.user_metadata) {
+      metadata = user.user_metadata;
+      metadata.previousOrders.push(req.query);
+    } else {
+      metadata = {
+        previousOrders: [req.query]
+      };
+    }
+    
+    user = await management.updateUserMetadata(params, metadata);
+
+    res.send({
+      msg: "Your access token was successfully validated, and your order submitted!"
+    });
+  } catch (e) {
+    return res.status(401).send({ msg: "Error updating user record" });
+  }
+  
 });
 
 app.get("/auth_config.json", (req, res) => {
@@ -49,7 +76,6 @@ app.get("/*", (_, res) => {
 app.use(function(err, req, res, next) {
   console.log(err);
   if (err.name === "UnauthorizedError") {
-    
     return res.status(401).send({ msg: "Invalid token" });
   }else{
     console.log(err);
