@@ -97,7 +97,7 @@ const initOrder = async () => {
 
     var toast = new bootstrap.Toast(document.getElementById("order-success-toast"));
     toast.show();
-    
+
     clearCart();
 
 } catch (e) {
@@ -155,7 +155,8 @@ window.onload = async () => {
 
       if (result.appState && result.appState.targetUrl) {
         window.history.replaceState({}, document.title, result.appState.targetUrl);
-        showContentFromUrl(result.appState.targetUrl);
+        //showContentFromUrl(result.appState.targetUrl);
+        window.location.reload();
       } else {
         window.history.replaceState({}, document.title, "/");
       }
